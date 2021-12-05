@@ -12,7 +12,7 @@ mkdir $day
 
 # Create the files with some boilerplate code
 touch $day/part1.py
-printf "file_name = 'input.txt'\n\nfor line in open(file_name):\n" >> $day/part1.py
+printf "file_name = 'demo.txt'\n\nfor line in open(file_name):\n" >> $day/part1.py
 touch $day/part2.py
 
 # Create demo and input files. 
