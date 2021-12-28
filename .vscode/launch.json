@@ -1,0 +1,15 @@
+{
+    // Change working dir to the file's dir,
+    // so it can reference the demo and input files
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug",
+            "type": "python",
+            "request": "launch",
+            "cwd": "${fileDirname}",
+            "program": "${fileBasename}",
+            "console": "integratedTerminal",
+        },
+    ]
+}
