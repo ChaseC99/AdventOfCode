@@ -1,26 +1,35 @@
-file_name = "input.txt"
+file_name = 'input.txt'
 
-jolts = []
+points_map = {
+    ")": 3,
+    "]": 57,
+    "}": 1197,
+    ">": 25137
+}
+
+opening_chars = {
+    "(", "[", "{", "<"
+}
+
+chars_map = {
+    ")": "(",
+    "]": "[",
+    "}": "{",
+    ">": "<"
+}
+
+syntax_err_sum = 0
 
 for line in open(file_name):
-    jolts.append(int(line.strip()))
+    stack = []
 
-jolts.sort()
+    for char in line.strip():
+        if char in opening_chars:
+            stack.append(char)
+        else:
+            opening_char = chars_map[char]
+            if stack.pop() != opening_char:
+                syntax_err_sum += points_map[char]
+                break
 
-curr = 0
-
-one_diff = 0
-three_diff = 0
-
-for j in jolts:
-    diff = j - curr
-    if diff == 1: one_diff += 1
-    elif diff == 3: three_diff += 1
-    elif diff > 4: print(diff)
-    
-    curr = j
-
-three_diff += 1
-
-print("one:", one_diff)
-print("three:", three_diff)
+print(syntax_err_sum)
