@@ -1,47 +1,54 @@
-file_name = "input2.txt"
+file_name = 'input.txt'
 
-visted = set()
-instructions = []
-
+grid = []
 for line in open(file_name):
-    operation, val = line.strip().split()
-    val = int(val)
+    grid.append([int(h) for h in list(line.strip())])
 
-    instructions.append((operation, val))
+width = len(grid[0])
+height = len(grid)
 
+def compute_score(x, y):
+    global grid, width, height
 
+    val = grid[y][x]
+    row = grid[y]
+    col = [row[x] for row in grid]
 
-def execute_instruction(i, acc, branch, visted):
-    if i in visted:
-        return 0
-    else:
-        visted.add(i)
+    # Left
+    left = compute_score_for_direction(x, y, lambda x, y: (x-1, y))
+    
+    # Right
+    right = compute_score_for_direction(x, y, lambda x, y: (x+1, y))
+    
+    # Up 
+    up = compute_score_for_direction(x, y, lambda x, y: (x, y-1))
 
-    if i >= len(instructions):
-        return acc
-    operation, val = instructions[i]
+    # Down
+    down = compute_score_for_direction(x, y, lambda x, y: (x, y+1))
 
-    if operation == 'jmp':
-        if branch:
-            return max(
-                execute_instruction(i+val, acc, True, set(list(visted))),
-                execute_instruction(i+1, acc, False, set(list(visted)))
-            )
-        else:
-            return execute_instruction(i+val, acc, branch, set(list(visted)))
+    return left * right * up * down
 
-    elif operation == 'acc':
-        acc += val
-        return execute_instruction(i+1, acc, branch, set(list(visted)))
+def _is_valid_position(x, y):
+    global grid
 
-    elif operation == 'nop':
-        if branch:
-            return max(
-                execute_instruction(i+val, acc, False, set(list(visted))),
-                execute_instruction(i+1, acc, True, set(list(visted)))
-            )
-        else:
-            return execute_instruction(i+1, acc, branch, set(list(visted)))
+    return x >= 0 and x < len(grid[0]) and y >= 0 and y < len(grid)
 
+def compute_score_for_direction(x, y, move):
+    global grid
+    score = 0
+    val = grid[y][x]
+    
+    while True:
+        x, y = move(x, y)
+        if not _is_valid_position(x, y):
+            return score
+        score += 1
+        if grid[y][x] >= val:
+            return score
 
-print(execute_instruction(0, 0, True, set()))
+best_score = 0
+for y in range(height):
+    for x in range(width):
+        best_score = max(compute_score(x, y), best_score)
+
+print(best_score)

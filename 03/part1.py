@@ -1,35 +1,20 @@
-from collections import defaultdict
 file_name = 'input.txt'
 
-file = open(file_name)
-lines = file.readlines()
-
-bit_count = []
-for bit in lines[0].strip():
-    count = defaultdict(int)
-    count[bit] += 1
-    bit_count.append(count)
-    
-for line in lines[1:]:
-    line = line.strip()
-    for index in range(len(line)):
-        bit = line[index]
-        bit_count[index][bit] += 1 
-
-gamma = ''
-epsilon = ''
-for bit in bit_count:
-    if bit['0'] > bit['1']:
-        gamma += '0'
-        epsilon += '1'
+def letterToValue(letter):
+    if letter.isupper():
+        return ord(letter)-38
     else:
-        gamma += '1'
-        epsilon += '0'
+        return ord(letter)-96
 
-gamma = int(gamma, 2)
-epsilon = int(epsilon, 2)
+total = 0
+for line in open(file_name):
+    line = line.strip()
+    length = len(line)
+    left = set(line[:int(length/2)])
+    right = set(line[int(length/2):])
 
-print('gamma', gamma)
-print('epsilon', epsilon)
+    unique = left.intersection(right)
+    
+    total += letterToValue(unique.pop())
 
-print(gamma * epsilon)
+print(total)

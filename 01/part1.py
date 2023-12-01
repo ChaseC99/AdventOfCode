@@ -1,11 +1,12 @@
 file_name = 'input.txt'
 
-depth_increases = -1
-prev_depth = 0
+sum=0
+maxSum=0
 for line in open(file_name):
-    depth = int(line.strip())
-    if depth > prev_depth:
-        depth_increases += 1
-    prev_depth = depth
+    val = line.strip()
+    maxSum = max(sum, maxSum)
+    sum = 0 if val == "" else sum + int(val)
 
-print(depth_increases)
+maxSum = max(sum, maxSum)
+
+print(maxSum)

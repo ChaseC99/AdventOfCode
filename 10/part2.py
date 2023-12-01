@@ -1,48 +1,26 @@
 file_name = 'input.txt'
 
-points_map = {
-    "(": 1,
-    "[": 2,
-    "{": 3,
-    "<": 4
-}
+x = 1
+cycle = 0
+crt = ['']
 
-opening_chars = {
-    "(", "[", "{", "<"
-}
+def increment_cycle():
+    global x, cycle, crt
+    cycle += 1
+    crt[-1] = crt[-1] + ('#' if x-1 <= (cycle-1)%40 <= x+1 else '.')
 
-chars_map = {
-    ")": "(",
-    "]": "[",
-    "}": "{",
-    ">": "<"
-}
-
-err_sums = []
+    if cycle % 40 == 0:
+        crt.append('')
 
 for line in open(file_name):
-    stack = []
-    skip = False
+    line = line.strip()
+    if line.startswith("noop"):
+        increment_cycle()
+    if line.startswith("addx"):
+        val = int(line.split()[1])
+        increment_cycle()
+        increment_cycle()
+        x += val
 
-    for char in line.strip():
-        if char in opening_chars:
-            stack.append(char)
-        else:
-            opening_char = chars_map[char]
-            if stack.pop() != opening_char:
-                skip = True
-                break
-    
-    if skip:
-        continue
-
-    err_sum = 0
-    for char in reversed(stack):
-        err_sum *= 5
-        err_sum += points_map[char]
-    
-    if err_sum:
-        err_sums.append(err_sum)
-
-err_sums.sort()    
-print(err_sums[int(len(err_sums)/2)])
+for row in crt:
+    print(row)

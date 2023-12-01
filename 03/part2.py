@@ -1,50 +1,25 @@
-from copy import deepcopy
 file_name = 'input.txt'
 
-file = open(file_name)
-lines = file.read().splitlines()
-
-oxygen = deepcopy(lines)
-i = 0
-while len(oxygen) > 1:
-    zeros = []
-    ones = []
-
-    for line in oxygen:
-        if line[i] == '0':
-            zeros.append(line)
-        else:
-            ones.append(line)
-    
-    if len(zeros) > len(ones):
-        oxygen = zeros
+def letterToValue(letter):
+    if letter.isupper():
+        return ord(letter)-38
     else:
-        oxygen = ones
+        return ord(letter)-96
 
-    i += 1
+total = 0
+group = []
+def checkGroup():
+    global group
+    global total
+    if len(group) == 3:
+        unique = group[0].intersection(group[1]).intersection(group[2])
+        print(unique)
+        total += letterToValue(unique.pop())
+        group = []
 
-oxygen = oxygen[0]
+for line in open(file_name):
+    checkGroup()
+    group.append(set(line.strip()))
 
-coo = deepcopy(lines)
-i = 0
-while len(coo) > 1:
-    zeros = []
-    ones = []
-
-    for line in coo:
-        if line[i] == '0':
-            zeros.append(line)
-        else:
-            ones.append(line)
-    
-    if len(zeros) > len(ones):
-        coo = ones
-    else:
-        coo = zeros
-
-    i += 1
-
-coo = coo[0]
-
-print("o2:", oxygen, "  |  co2:", coo)
-print(int(oxygen, 2) * int(coo, 2))
+checkGroup()    
+print(total)

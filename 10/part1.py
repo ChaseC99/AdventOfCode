@@ -1,35 +1,26 @@
 file_name = 'input.txt'
 
-points_map = {
-    ")": 3,
-    "]": 57,
-    "}": 1197,
-    ">": 25137
-}
+x = 1
+cycle = 0
+signals = 0
 
-opening_chars = {
-    "(", "[", "{", "<"
-}
+def increment_cycle():
+    global x, cycle, signals
+    cycle += 1
 
-chars_map = {
-    ")": "(",
-    "]": "[",
-    "}": "{",
-    ">": "<"
-}
-
-syntax_err_sum = 0
+    if cycle == 20 or (cycle-20) % 40 == 0:
+        signal_strength = x*cycle
+        signals += signal_strength
+        print(f"Cycle {cycle}: X={x}, Signal Strength={signal_strength}")
 
 for line in open(file_name):
-    stack = []
+    line = line.strip()
+    if line.startswith("noop"):
+        increment_cycle()
+    if line.startswith("addx"):
+        val = int(line.split()[1])
+        increment_cycle()
+        increment_cycle()
+        x += val
 
-    for char in line.strip():
-        if char in opening_chars:
-            stack.append(char)
-        else:
-            opening_char = chars_map[char]
-            if stack.pop() != opening_char:
-                syntax_err_sum += points_map[char]
-                break
-
-print(syntax_err_sum)
+print(signals)

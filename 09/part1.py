@@ -1,35 +1,46 @@
 file_name = 'input.txt'
 
-grid = []
+visited = set()
+h_pos = (0, 0)
+t_pos = (0, 0)
+
+visited.add(t_pos)
+
+def invert_direction(direction):
+    if (direction == 'U'):
+        return 'D'
+    if (direction == 'D'):
+        return 'U'
+    if (direction == 'R'):
+        return 'L'
+    if (direction == 'L'):
+        return 'R'
+
+def move(pos, direction):
+    if (direction == 'U'):
+        return (pos[0], pos[1]+1)
+    if (direction == 'D'):
+        return (pos[0], pos[1]-1)
+    if (direction == 'R'):
+        return (pos[0]+1, pos[1])
+    if (direction == 'L'):
+        return (pos[0]-1, pos[1])
+
+def are_touching(pos1, pos2):
+    x1, y1 = pos1
+    x2, y2 = pos2
+
+    return abs(x2-x1) <= 1 and abs(y2-y1) <= 1
+        
 
 for line in open(file_name):
-    row = []
-    for num in line.strip():
-        row.append(int(num))
-    grid.append(row)
-
-adj_pos = [(-1,0), (0,1), (1,0), (0, -1)]
-
-risk_level = 0
-for r in range(len(grid)):
-    for c in range(len(grid[0])):
-        is_min = True
-        val = grid[r][c]
+    direction, times = line.strip().split()
+    for i in range(int(times)):
+        h_pos = move(h_pos, direction)
         
-        i = 0
-        while is_min and i < len(adj_pos): 
-            pos = adj_pos[i]
-            x = pos[0]+r
-            y = pos[1]+c
+        if not are_touching(h_pos, t_pos):
+            t_pos = h_pos
+            t_pos = move(t_pos, invert_direction(direction))
+            visited.add(t_pos)
 
-            if (x >= 0 and x < len(grid) 
-            and y >= 0 and y < len(grid[0])
-            and grid[x][y] <= val):
-                is_min = False
-            
-            i += 1
-        
-        if is_min:
-            risk_level += val+1
-    
-print(risk_level)
+print(len(visited))

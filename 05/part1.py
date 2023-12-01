@@ -1,29 +1,53 @@
-from collections import defaultdict
-file_name = 'demo.txt'
+file_name = 'input.txt'
+map_end = 8
 
-vents_map = defaultdict(int)
-count = 0
+def parse_line(l):
+    parsed = []
+    length = len(l)
+    i = 1
+    while i < length:
+        if l[i].isalpha():
+            parsed.append(l[i])
+        else:
+            parsed.append(None)
+        
+        i += 4
+    
+    return parsed
 
-def update_map(position):
-    vents_map[position] += 1
-    if vents_map[position] == 2:
-        global count
-        count += 1
-
+lines = []
 for line in open(file_name):
-    pos1, pos2 = line.strip().split(' -> ')
-    x1, y1 = [int(val) for val in pos1.split(',')]
-    x2, y2 = [int(val) for val in pos2.split(',')]
+    lines.append(line.strip('\n'))
 
-    min_x, max_x = sorted([x1, x2])
-    min_y, max_y = sorted([y1, y2])
+parsed_lines = []
+for i in range(map_end):
+    parsed_lines.append(parse_line(lines[i]))
 
-    if min_x == max_x:
-        for y in range(min_y, max_y+1):
-            update_map((min_x, y))
-            
-    elif min_y == max_y:
-        for x in range(min_x, max_x+1):
-            update_map((x, min_y))
+cols = []
+for i in range(len(parsed_lines[0])):
+    cols.append([])
 
-print(count)
+for line in parsed_lines:
+    for i in range(len(line)):
+        if line[i]:
+            cols[i].insert(0, line[i])
+
+def read_instr(l):
+    _, amount, __, f, ___, t = l.split(' ')
+    
+    return (int(amount), int(f)-1, int(t)-1)
+
+def act(amount, f, t):
+    global cols
+    for i in range(amount):
+        val = cols[f].pop()
+        cols[t].append(val)
+
+for i in range(map_end+2, len(lines)):
+    amount, f, t = read_instr(lines[i])
+    act(amount, f, t)
+
+for col in cols:
+    print(col[-1], end='')
+
+print()

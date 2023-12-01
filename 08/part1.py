@@ -1,33 +1,30 @@
-file_name = "input1.txt"
+file_name = 'input.txt'
 
-visted = set()
-instructions = []
-
+grid = []
 for line in open(file_name):
-    operation, val = line.strip().split()
-    val = int(val)
+    grid.append([int(h) for h in list(line.strip())])
 
-    instructions.append((operation, val))
+width = len(grid[0])
+height = len(grid)
 
-acc = 0
-i = 0
-while i < len(instructions):
-    print(i+1)
-    if i in visted:
-        print('break', acc)
-        print(sorted(list(visted)))
-        quit()
-    
-    visted.add(i)
+def is_visible(x, y):
+    global grid, width, height
 
-    operation, val = instructions[i]
-    if operation == 'jmp':
-        i += val
-        continue
-    elif operation == 'acc':
-        acc += val
-    
-    i += 1
+    val = grid[y][x]
+    row = grid[y]
+    col = [row[x] for row in grid]
 
-print('end', acc)
-    
+    return (x == 0 or x+1 == width      # Check left/right border
+        ) or (y == 0 or y+1 == height   # Check up/down border
+        ) or (max(row[:x]) < val        # Check left
+        ) or (max(row[x+1:]) < val      # Check right
+        ) or (max(col[:y]) < val        # Check up
+        ) or (max(col[y+1:]) < val      # Check down
+        )
+
+count = 0
+for y in range(height):
+    for x in range(width):
+        if is_visible(x, y):
+            count += 1
+print(count)
