@@ -1,8 +1,28 @@
 #!/bin/bash
 
+# NEW DAY SCRIPT
+# This script will get you all setup to start solving the challenges for the day.
+#
+# It creates a new folder with 4 files:
+# - demo.txt
+#       Empty. Copy/paste from the day's instructions.
+# - part1.py
+#       Boilerplate code to open demo.py and parse the lines.
+# - part2.py
+#       Empty. Continue building off of part1.py once completed.
+# - input.txt
+#       The challenge's input file, loaded from the Advent of Code website.
+#
+# Usage
+# To run the script for the current day:
+#   make
+#
+# To run the script for a specific day, e.g. day 2
+# (Include a leading 0 for single digit numbers):
+#   make day=02
+
 # Load the session cookie from the .env file
 source ./.env
-echo $SESSION
 
 # Get the year
 year=$(TZ='America/New_York' date +%Y)
