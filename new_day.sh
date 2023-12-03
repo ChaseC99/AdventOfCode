@@ -4,8 +4,17 @@
 source ./.env
 echo $SESSION
 
-# Name the day paramater
-day=$1
+# Get the year
+year=$(TZ='America/New_York' date +%Y)
+
+# Get the day
+# Default to the current day if no argument is passed
+if [ -z "$1" ]
+then
+    day=$(TZ='America/New_York' date +%d)
+else
+    day=$1
+fi
 
 # Create folder for the day
 mkdir $day
@@ -22,9 +31,9 @@ touch $day/input.txt
 # Format the day variable
 # For single digit numbers, we need to remove the leading 0
 # E.g. 01 -> 1
-[[ ${day:0:1} = '0' ]] && day="${day:1}"
+[[ ${day:0:1} = '0' ]] && formattedDay="${day:1}"
 
 # Fetch the day's input from adventofcode.com
-curl -b "session=$SESSION" https://adventofcode.com/2023/day/$day/input > $1/input.txt
+curl -b "session=$SESSION" https://adventofcode.com/$year/day/$formattedDay/input > $day/input.txt
 # Remove the newline at the end of the input file
-echo -n "$(cat $1/input.txt)" >| "$1/input.txt"
+echo -n "$(cat $day/input.txt)" >| "$day/input.txt"

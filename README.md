@@ -12,12 +12,27 @@ Each day a new 2-part coding challenge is released for everyone to solve.
 ## New Day Script
 This script will get you all setup to start solving the challenges for the day.
 
-It creates a new folder with 4 files: `demo.txt`, `part1.py`, `part2.py`, `input.txt`.   
-`part1.py` has some boilerplate code to open `demo.py` and parse the lines.  
-`input.txt` has the challenge's input file, loaded from the Advent of Code website.  
+It creates a new folder with 4 files: 
+- `demo.txt`  
+Empty. Copy/paste from the day's instructions.
+- `part1.py`  
+Boilerplate code to open `demo.py` and parse the lines.
+- `part2.py`  
+Empty. Continue building off of `part1.py` once completed.
+- `input.txt`  
+The challenge's input file, loaded from the Advent of Code website.  
 
-Call the script with the day as an arg. _Add a leading 0 for single digit numbers._  
-Example: `./new_day.sh 01`
+### Usage
+To run the script for the current day:
+```bash
+make
+```
+
+To run the script for a specific day, e.g. day 2  
+(_Include a leading 0 for single digit numbers_):
+```bash
+make day=02
+```
 
 ## Getting Setup
 - Clone the repository  
