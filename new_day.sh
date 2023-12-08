@@ -36,24 +36,39 @@ else
     day=$1
 fi
 
+# Format the day variable
+# For single digit numbers, we need to remove the leading 0
+# E.g. 01 -> 1
+[[ ${day:0:1} = '0' ]] && formattedDay="${day:1}"
+
+# Generate the url for the day
+url="https://adventofcode.com/$year/day/$formattedDay"
+
+# Start message
+echo -e "\nCreating \"Advent of Code\" $year Day $day...\n\n"
+
 # Create folder for the day
 mkdir $day
 
 # Create the files with some boilerplate code
 touch $day/part1.py
-printf "file_name = 'demo.txt'\n\nfor line in open(file_name):\n" >> $day/part1.py
+printf "# $url\n\nfile_name = 'demo.txt'\n\nfor line in open(file_name):\n\tline = line.strip()" >> $day/part1.py
 touch $day/part2.py
 
 # Create demo and input files. 
 touch $day/demo.txt
 touch $day/input.txt
 
-# Format the day variable
-# For single digit numbers, we need to remove the leading 0
-# E.g. 01 -> 1
-[[ ${day:0:1} = '0' ]] && formattedDay="${day:1}"
-
 # Fetch the day's input from adventofcode.com
-curl -b "session=$SESSION" https://adventofcode.com/$year/day/$formattedDay/input > $day/input.txt
+curl -b "session=$SESSION" $url/input > $day/input.txt
 # Remove the newline at the end of the input file
 echo -n "$(cat $day/input.txt)" >| "$day/input.txt"
+
+# Open the day's instructions in the browser
+open $url
+
+# Open the input file in VS Code
+code $day/part1.py
+
+# Goodbye message
+echo -e "\n\nAll Done! Happy Coding 🎄"
