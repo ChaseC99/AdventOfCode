@@ -29,10 +29,6 @@ class Map:
         return self.__str__()
 
 
-# def create_map(destination, source, range):
-#     def mapper(value):
-
-
 lines = []
 for line in open(file_name):
     lines.append(line.strip())
