@@ -1,7 +1,7 @@
-.PHONY: new_day
-
-new_day:
-	./new_day.sh $(day)
+.PHONY: run
 
 run:
 	./run_python.sh $(day)
+
+day:
+	./new_day.sh $(day)

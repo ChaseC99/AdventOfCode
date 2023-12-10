@@ -25,13 +25,13 @@ The challenge's input file, loaded from the Advent of Code website.
 ### Usage
 To run the script for the current day:
 ```bash
-make
+make day
 ```
 
 To run the script for a specific day, e.g. day 2  
 (_Include a leading 0 for single digit numbers_):
 ```bash
-make day=02
+make day day=02
 ```
 
 ## Getting Setup
