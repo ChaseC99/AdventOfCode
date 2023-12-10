@@ -39,7 +39,7 @@ fi
 # Format the day variable
 # For single digit numbers, we need to remove the leading 0
 # E.g. 01 -> 1
-[[ ${day:0:1} = '0' ]] && formattedDay="${day:1}"
+formattedDay=${day#0}
 
 # Generate the url for the day
 url="https://adventofcode.com/$year/day/$formattedDay"
